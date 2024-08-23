@@ -52,7 +52,7 @@ def sync_files(source, target):
             os.makedirs(target_path)
 
         for file in files:
-            if file.endswith((".mp3", ".mp4", ".jpg", ".png")):
+            if file.endswith((".mp3", ".mp4", ".m4a", ".jpg", ".png")):
                 source_file = os.path.join(root, file)
                 target_file = os.path.join(target_path, file)
 

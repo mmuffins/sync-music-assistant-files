@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "main",
+      "console": "integratedTerminal",
+      "args": [
+        "--source", "C:/Users/email_000/Desktop/music",
+        "--target", "\\\\homeassistant.lan\\media"
+      ]
+    }
+  ]
+}
