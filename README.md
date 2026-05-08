@@ -16,7 +16,12 @@ $ uv run main.py --source '[SOURCE_DIRECTORY]' --target '[TARGET_DIRECTORY]'
 
 
 ## Updating
+devenv:
+```bash
+devenv update
 ```
+uv:
+```bash
 # Get outdated packages
 $ uv tree --outdated --depth 1
 
