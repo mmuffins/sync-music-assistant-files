@@ -73,10 +73,14 @@ if __name__ == "__main__":
         description="Sync music files from source to target directory."
     )
 
-    parser.add_argument("--source", type=str, required=True, help="Source directory")
+    parser.add_argument(
+        "--source", "-Source", dest="source", type=str, required=True, help="Source directory"
+    )
     # Make sure to always use single, quotes for the target directory,
     # double quotes may not work for network locations
-    parser.add_argument("--target", type=str, required=True, help="Target directory")
+    parser.add_argument(
+        "--target", "-Target", dest="target", type=str, required=True, help="Target directory"
+    )
     args = parser.parse_args()
 
     main(args.source, args.target)
