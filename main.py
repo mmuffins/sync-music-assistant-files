@@ -9,17 +9,57 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+SUPPORTED_EXTENSIONS = (".mp3", ".mp4", ".m4a", ".jpg", ".png")
 
-def clear_target_directory(target):
+
+def is_supported_file(file_name):
+    return file_name.endswith(SUPPORTED_EXTENSIONS)
+
+
+def should_copy_file(source_file, target_file):
+    return not os.path.exists(target_file)
+
+
+def prune_target_directory(source, target):
     try:
-        for root, dirs, files in os.walk(target):
-            for file in files:
-                os.remove(os.path.join(root, file))
-            for dir in dirs:
-                shutil.rmtree(os.path.join(root, dir))
-        logging.info(f"Cleared contents of target directory: {target}")
+        source_directories = set()
+        source_files = set()
+
+        for root, _, files in os.walk(source):
+            relative_path = os.path.relpath(root, source)
+            source_directories.add(relative_path)
+
+            for file_name in files:
+                if is_supported_file(file_name):
+                    source_files.add(os.path.join(relative_path, file_name))
+
+        for root, dirs, files in os.walk(target, topdown=False):
+            relative_path = os.path.relpath(root, target)
+
+            for file_name in files:
+                target_file = os.path.join(root, file_name)
+                target_relative_file = os.path.join(relative_path, file_name)
+
+                if not is_supported_file(file_name):
+                    continue
+
+                if target_relative_file not in source_files:
+                    logging.info(f"Remove `{target_file}`.")
+                    os.remove(target_file)
+
+            if relative_path == ".":
+                continue
+
+            if relative_path not in source_directories:
+                logging.info(f"Remove `{root}`.")
+                shutil.rmtree(root)
+                continue
+
+            if not os.listdir(root):
+                logging.info(f"Remove empty directory `{root}`.")
+                os.rmdir(root)
     except Exception as e:
-        logging.error(f"Error clearing target directory contents: {e}")
+        logging.error(f"Error syncing target directory contents: {e}")
         raise
 
 
@@ -41,9 +81,9 @@ def remove_isrc_tag(file_path):
         print(f"Error removing ISRC tag from {file_path}: {e}")
 
 
-def sync_files(source, target):
+def copy_supported_files(source, target):
     logging.info(f"Copy files from `{source}` to `{target}`.")
-    for root, dirs, files in os.walk(source):
+    for root, _, files in os.walk(source):
         relative_path = os.path.relpath(root, source)
         target_path = os.path.join(target, relative_path)
 
@@ -52,20 +92,24 @@ def sync_files(source, target):
             os.makedirs(target_path)
 
         for file in files:
-            if file.endswith((".mp3", ".mp4", ".m4a", ".jpg", ".png")):
+            if is_supported_file(file):
                 source_file = os.path.join(root, file)
                 target_file = os.path.join(target_path, file)
 
                 if file.endswith((".mp3", ".mp4")):
                     remove_isrc_tag(source_file)
 
+                if not should_copy_file(source_file, target_file):
+                    logging.debug(f"Skip unchanged file `{target_file}`.")
+                    continue
+
                 logging.info(f"Copy `{source_file}` to `{target_file}`.")
                 shutil.copy2(source_file, target_file)
 
 
 def main(source, target):
-    clear_target_directory(target)
-    sync_files(source, target)
+    prune_target_directory(source, target)
+    copy_supported_files(source, target)
 
 
 if __name__ == "__main__":
