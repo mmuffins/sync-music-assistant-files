@@ -16,7 +16,7 @@
     enable = true;
     version = "3.14";
 
-    venv.enable = false;
+    venv.enable = true;
     uv = {
       enable = true;
       sync.enable = true;
