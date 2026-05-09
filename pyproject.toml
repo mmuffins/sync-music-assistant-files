@@ -3,7 +3,7 @@ name = "sync-music-assistant-files"
 version = "1.0.0"
 description = "Clears a target directory, then copies supported music and artwork files from a source directory while removing ISRC tags from source MP3 and MP4 files before copy."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
     "mutagen>=1.47.0",
 ]
