@@ -9,14 +9,13 @@
 {
   env.GREET = "Sync Music Assistant Files devenv environment";
 
-  packages = with pkgs; [
-    git
-    python314
-  ];
+  packages = with pkgs; [ ];
   cachix.pull = [ "nix-linter" ];
 
   languages.python = {
     enable = true;
+    version = "3.14";
+
     venv.enable = false;
     uv = {
       enable = true;
