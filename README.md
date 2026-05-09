@@ -1,11 +1,11 @@
 # Sync Music Assistant Files
 ## Running
-powershell:
+Windows:
 ```powershell
-$ . ./run.ps1 -Source '[SOURCE_DIRECTORY]' -Target '[TARGET_DIRECTORY]'q
+$ uv run main.py --source '[SOURCE_DIRECTORY]' --target '[TARGET_DIRECTORY]'
 ```
 
-bash:
+Linux:
 ```bash
 # Enable devenv
 $ devenv shell
@@ -13,7 +13,7 @@ $ devenv shell
 # run script
 $ uv run main.py --source '[SOURCE_DIRECTORY]' --target '[TARGET_DIRECTORY]'
 ```
-
+A runner script is available for nixos that automatically activates the devshell and runs the main script.
 
 ## Updating
 devenv:
