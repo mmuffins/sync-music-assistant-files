@@ -16,11 +16,14 @@ $ uv run main.py --source '[SOURCE_DIRECTORY]' --target '[TARGET_DIRECTORY]'
 A runner script is available for nixos that automatically activates the devshell and runs the main script.
 
 ## Updating
-devenv:
+- Manually update the python version in `devenv.nix`
+- Manually update the python version in `pyproject.toml`
+- Update devenv:
 ```bash
 devenv update
 ```
-uv:
+
+- Update uv:
 ```bash
 # Get outdated packages
 $ uv tree --outdated --depth 1
@@ -32,3 +35,4 @@ $ uvpkg=mutagen && uv remove $uvpkg && uv add $uvpkg
 $ uv add "mutagen>=1.47.0"
 ```
 
+uv automatically upgrades versions matching the constraint, and will do so silently, they will not be listed in the outdated packages. `uv tree --outdated` only highlights packages that need to be upgraded manually.
