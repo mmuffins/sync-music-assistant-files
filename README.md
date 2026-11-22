@@ -16,7 +16,6 @@ $ uv run main.py --source '[SOURCE_DIRECTORY]' --target '[TARGET_DIRECTORY]'
 A runner script is available for nixos that automatically activates the devshell and runs the main script.
 
 ## Updating
-- Manually update the python version in `devenv.nix`
 - Manually update the python version in `pyproject.toml`
 - Update devenv:
 ```bash
@@ -25,6 +24,9 @@ devenv update
 
 - Update uv:
 ```bash
+# run uv sync
+$ uv sync --upgrade
+
 # Get outdated packages
 $ uv tree --outdated --depth 1
 
